@@ -14,15 +14,15 @@ import java.util.ArrayList;
  */
 public class SimulationSetup {
 
-	final static String DEFAULT_OBSERVATION = "Temperature";
-	final static double DEFAULT_THETA = 65;
-	final static int DEFAULT_SENSOR_COUNT = 20;
-	final static double DEFAULT_POWER = 1d;
-	final static double DEFAULT_N = 5d;
-	final static double DEFAULT_V = 1d;
-	final static Boolean DEFAULT_RICIAN = true;
-	final static double DEFAULT_K = 1.5d;
-	final static Boolean DEFAULT_UNIFORM = false;
+	public final static String DEFAULT_OBSERVATION = "Temperature";
+	public final static double DEFAULT_THETA = 65;
+	public final static int DEFAULT_SENSOR_COUNT = 20;
+	public final static double DEFAULT_POWER = 1d;
+	public final static double DEFAULT_N = 5d;
+	public final static double DEFAULT_V = 1d;
+	public final static Boolean DEFAULT_RICIAN = true;
+	public final static double DEFAULT_K = 1.5d;
+	public final static Boolean DEFAULT_UNIFORM = false;
 
 
 	private String observationName;

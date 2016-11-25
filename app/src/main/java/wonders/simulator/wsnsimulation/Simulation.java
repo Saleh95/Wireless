@@ -261,7 +261,8 @@ public class Simulation {
 
 		});
 	}
-    
-    
 
+	public List<Complex> gethVals() {
+		return hVals;
+	}
 }

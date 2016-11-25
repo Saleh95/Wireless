@@ -130,11 +130,12 @@ public class SimulationManager implements SetupListener {
         SimulationManager.getLastSimulation().sortSensorsByN(descending);
     }
 
-	@Override
-	public void setupChanged() {
-		SimulationManager.runSimulation();
-		this.listener.setupChanged();		
-	}
+    @Override
+    public void setupChanged() {
+        SimulationManager.runSimulation();
+        if (this.listener != null)
+            this.listener.setupChanged();
+    }
 
 
 }
