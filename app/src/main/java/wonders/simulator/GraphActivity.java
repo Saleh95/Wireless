@@ -42,10 +42,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
         SeekBar.OnSeekBarChangeListener
 {
 
-    private XYPlot plot;
-    private Simulation sim;
-    private SimulationSetup setup;
-    private SimulationManager manager;
+
+
 
     public int getRuntime() {
         return runtime;
@@ -57,6 +55,10 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
 
     private int runtime = 10;
 
+    private double[] ThetaHat = new double[runtime];
+
+    private double[] GaussianCurve = new double[runtime];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
         LineChart chart = (LineChart) findViewById(R.id.chart);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         SimulationManager.updateSimulation(pref);
+
+//        SimulationManager.runSimulation();
 
 //        SimulationManager.getSimulationSetup().setObservation(SimulationSetup.DEFAULT_OBSERVATION);
 //        SimulationManager.getSimulationSetup().setSensorCount(SimulationSetup.DEFAULT_SENSOR_COUNT);
@@ -75,7 +79,16 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
 //        SimulationManager.getSimulationSetup().setRician(SimulationSetup.DEFAULT_RICIAN);
 //        SimulationManager.getSimulationSetup().setUniform(SimulationSetup.DEFAULT_UNIFORM);
 
-//        SimulationManager.runSimulation();
+        for(int i = 0; i<runtime;i++){
+            SimulationManager.runSimulation();
+            ThetaHat[i]=SimulationManager.getSimulationSetup().getTheta();
+            GaussianCurve[i]=(SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
+        }
+
+//        Toast.makeText(getApplicationContext(),
+//                Double.toString(SimulationManager.getLastSimulation().getThetaHat().getMagnitude()),
+//                Toast.LENGTH_LONG).show();
+
 
         GraphData[] dataObjects = genrateGraph();
 
@@ -93,17 +106,15 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
 
         LineData lineData = new LineData(dataSet);
         chart.setData(lineData);
-        chart.invalidate(); // refresh
+        chart.invalidate();
     }
 
     private GraphData[] genrateGraph() {
-        GraphData[] data = new GraphData[SimulationManager.getLastSimulation().getSensorList().size()];
-        int i = 0;
-        for (Sensor s:SimulationManager.getLastSimulation().getSensorList()
-             ) {
-            data[i].setX(s.getHVal().getMagnitude());
-            data[i++].setY(s.getNVal().getMagnitude());
-
+        GraphData[] data = new GraphData[runtime];;
+        for(int i=0;i<runtime;i++){
+            data[i]= new GraphData();
+            data[i].setX(ThetaHat[i]);
+            data[i].setY(GaussianCurve[i]);
         }
         return data;
     }

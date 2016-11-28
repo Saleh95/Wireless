@@ -77,7 +77,7 @@ public class SimulationManager implements SetupListener {
         SimulationManager.getSimulationSetup().setUniform(isUniform);
 
         SimulationManager.runSimulation();
-        SimulationManager.getListener().setupChanged();
+//        SimulationManager.getListener().setupChanged();
     }
 
     public static void sortSensors() {
@@ -133,8 +133,8 @@ public class SimulationManager implements SetupListener {
     @Override
     public void setupChanged() {
         SimulationManager.runSimulation();
-        if (this.listener != null)
-            this.listener.setupChanged();
+        if (this.listener != null){
+            this.listener.setupChanged();}
     }
 
 
