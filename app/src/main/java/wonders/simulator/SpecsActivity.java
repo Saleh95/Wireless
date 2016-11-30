@@ -13,23 +13,12 @@ import wonders.simulator.wsnsimulation.SimulationSetup;
 
 //Design it so it puts the graph options
 
-public class SpecsActivity extends AppCompatActivity implements SetupListener{
+public class SpecsActivity extends Simulator_main implements SetupListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_specs);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        getLayoutInflater().inflate(R.layout.activity_specs,frameLayout);
     }
 
 

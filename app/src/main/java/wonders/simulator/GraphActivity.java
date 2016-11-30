@@ -1,13 +1,23 @@
 package wonders.simulator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.SeekBar;
@@ -31,13 +41,16 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import wonders.simulator.wsnsimulation.Complex;
 import wonders.simulator.wsnsimulation.Sensor;
@@ -46,35 +59,29 @@ import wonders.simulator.wsnsimulation.SimulationManager;
 import wonders.simulator.wsnsimulation.SimulationSetup;
 
 
-public class GraphActivity extends AppCompatActivity implements OnChartGestureListener,OnChartValueSelectedListener,
+public class GraphActivity extends Simulator_main implements OnChartGestureListener,OnChartValueSelectedListener,
         SeekBar.OnSeekBarChangeListener
 {
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
     private LineChart mChart;
+    private Intent intent;
+
+    double[] gaussianSamples;
+    double[] distrVals;
+    double[] samples;
 
 
-    public int getRuntime() {
-        return runtime;
-    }
-
-    public void setRuntime(int runtime) {
-        this.runtime = runtime;
-    }
-
-    private int runtime = 10;
-
-    private double[] ThetaHat = new double[runtime];
-
-    private double[] GaussianCurve = new double[runtime];
+    private int maximumSamples = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
+        getLayoutInflater().inflate(R.layout.activity_graph,frameLayout);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        LineChart chart = (LineChart) findViewById(R.id.chart);
+
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         SimulationManager.updateSimulation(pref);
 
@@ -89,47 +96,6 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
 
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
-
-//        SimulationManager.runSimulation();
-
-//        SimulationManager.getSimulationSetup().setObservation(SimulationSetup.DEFAULT_OBSERVATION);
-//        SimulationManager.getSimulationSetup().setSensorCount(SimulationSetup.DEFAULT_SENSOR_COUNT);
-//        SimulationManager.getSimulationSetup().setTheta(SimulationSetup.DEFAULT_THETA);
-//        SimulationManager.getSimulationSetup().setPower(SimulationSetup.DEFAULT_POWER);
-//        SimulationManager.getSimulationSetup().setVarianceN(SimulationSetup.DEFAULT_N);
-//        SimulationManager.getSimulationSetup().setVarianceV(SimulationSetup.DEFAULT_V);
-//        SimulationManager.getSimulationSetup().setK(SimulationSetup.DEFAULT_K);
-//        SimulationManager.getSimulationSetup().setRician(SimulationSetup.DEFAULT_RICIAN);
-//        SimulationManager.getSimulationSetup().setUniform(SimulationSetup.DEFAULT_UNIFORM);
-
-        for(int i = 0; i<runtime;i++){
-            SimulationManager.runSimulation();
-            ThetaHat[i]=SimulationManager.getLastSimulation().getThetaHat().getReal();
-            GaussianCurve[i]=(SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        }
-
-//        Toast.makeText(getApplicationContext(),
-//                Double.toString(SimulationManager.getLastSimulation().getThetaHat().getMagnitude()),
-//                Toast.LENGTH_LONG).show();
-
-
-//        GraphData[] dataObjects = genrateGraph();
-//
-//        List<Entry> entries = new ArrayList<Entry>();
-//
-//        for (GraphData data : dataObjects) {
-//
-//            // turn your data into Entry objects
-//            entries.add(new Entry((float) data.getX(),(float) data.getY()));
-//        }
-//
-//        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
-//        dataSet.setColor(Color.GREEN);
-//        dataSet.setValueTextColor(Color.BLACK); // styling, ...
-//        dataSet.setDrawValues(true);
-//        LineData lineData = new LineData(dataSet);
-//        chart.setData(lineData);
-//        chart.invalidate();
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setViewPortOffsets(0, 0, 0, 0);
@@ -153,15 +119,15 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
         mChart.setMaxHighlightDistance(300);
 
         XAxis x = mChart.getXAxis();
-        x.setEnabled(false);
+        x.setEnabled(true);
 
         YAxis y = mChart.getAxisLeft();
 //        y.setTypeface(mTfLight);
         y.setLabelCount(6, false);
-        y.setTextColor(Color.WHITE);
+        y.setTextColor(Color.GREEN);
         y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        y.setDrawGridLines(false);
-        y.setAxisLineColor(Color.WHITE);
+        y.setDrawGridLines(true);
+        y.setAxisLineColor(Color.BLACK);
 
         mChart.getAxisRight().setEnabled(false);
 
@@ -175,16 +141,6 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
         // dont forget to refresh the drawing
         mChart.invalidate();
 
-    }
-
-    private GraphData[] genrateGraph() {
-        GraphData[] data = new GraphData[runtime];;
-        for(int i=0;i<runtime;i++){
-            data[i]= new GraphData();
-            data[i].setX(ThetaHat[i]);
-            data[i].setY(GaussianCurve[i]);
-        }
-        return data;
     }
 
     @Override
@@ -262,65 +218,62 @@ public class GraphActivity extends AppCompatActivity implements OnChartGestureLi
     }
 
     private void setData(int count, float range) {
+       double mean = SimulationManager.getSimulationSetup().getTheta();
+        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup()
+                .getSensorCount());
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-        GraphData[] dataObjects = genrateGraph();
-
-//        for (int i = 0; i < count; i++) {
-//            float mult = (range + 1);
-//            float val = (float) (Math.random() * mult) + 20;// + (float)
-//            // ((mult *
-//            // 0.1) / 10);
-//            yVals.add(new Entry(i, val));
-//        }
-
-        for (GraphData data : dataObjects) {
-
-            // turn your data into Entry objects
-            yVals.add(new Entry((float) data.getX(),(float) data.getY()));
+        Random ran = new Random();
+        gaussianSamples = new double[maximumSamples];
+        for (int i=0;i<maximumSamples;i++) {
+            gaussianSamples[i] = ((ran.nextGaussian()));
         }
 
-        LineDataSet set1;
+        distrVals = new double[maximumSamples];
+        samples = new double[maximumSamples];
+        for (int i=0;i<maximumSamples;i++) {
+            if (i<maximumSamples/2)
+                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
+            else
+                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
 
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set1.setValues(yVals);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
+            // This is the renormalized Gaussian formula, specific for this
+
+            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) *
+                    (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) *
+                    Math.sqrt(2 * Math.PI))));
+        }
+
+        List<Entry> entries = new ArrayList<Entry>();
+        for (int i=0;i<maximumSamples;i++) {
+            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
+        }
+
+        Collections.sort(entries, new EntryXComparator());
+        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution");
+
+        distributionData.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        distributionData.setCubicIntensity(0.2f);
+        distributionData.setDrawCircles(false);
+        distributionData.setLineWidth(1.8f);
+        distributionData.setCircleColor(Color.GREEN);
+        distributionData.setColor(Color.GREEN);
+        distributionData.setFillColor(Color.GREEN);
+
+        LineData data = new LineData(distributionData);
+
+        mChart.setData(data);
+        mChart.invalidate();
+
+        }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(yVals, "DataSet 1");
-
-            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            set1.setCubicIntensity(0.2f);
-            //set1.setDrawFilled(true);
-            set1.setDrawCircles(false);
-            set1.setLineWidth(1.8f);
-            set1.setCircleRadius(4f);
-            set1.setCircleColor(Color.WHITE);
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setColor(Color.WHITE);
-            set1.setFillColor(Color.WHITE);
-            set1.setFillAlpha(100);
-            set1.setDrawHorizontalHighlightIndicator(false);
-            set1.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return -10;
-                }
-            });
-
-            // create a data object with the datasets
-            LineData data = new LineData(set1);
-//            data.setValueTypeface(mTfLight);
-            data.setValueTextSize(9f);
-            data.setDrawValues(false);
-
-            // set data
-            mChart.setData(data);
+            super.onBackPressed();
         }
     }
-
 
 }
