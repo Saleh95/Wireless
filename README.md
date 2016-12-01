@@ -1,20 +1,21 @@
 # Wireless
 
-Sensor Network:
+## Sensor Network:
+,,,
 Sumulation for Distributed Estimation in Wireless Sensor Networks
 
-Installing:
+## Installing:
 Clone or download the source file
 To Clone: git clone https://github.com/Saleh95/Wireless.git
 
-Activities:
+## Activities:
 Main - implements the main
 Graph - holds and plots graph data
 Specs - holds the statistics
 
-Built With:
+## Built With:
 Android Studio
 
-Authors:
+## Authors:
 Joy Onyerikwu
 Saleh Shehata
