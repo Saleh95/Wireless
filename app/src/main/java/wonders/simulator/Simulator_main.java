@@ -44,6 +44,8 @@ public class Simulator_main extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
+
     }
 
     @Override
