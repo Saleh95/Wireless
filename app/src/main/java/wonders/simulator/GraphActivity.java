@@ -140,7 +140,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         // dont forget to refresh the drawing
         mChart.invalidate();
 
-        colorPicker();
+//        colorPicker();
 
     }
 
