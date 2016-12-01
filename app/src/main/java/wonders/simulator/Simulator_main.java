@@ -95,9 +95,7 @@ public class Simulator_main extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
+        }else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 

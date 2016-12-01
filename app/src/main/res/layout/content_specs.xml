@@ -13,5 +13,4 @@
     tools:context="wonders.simulator.SpecsActivity"
     tools:showIn="@layout/activity_specs">
 
-
 </RelativeLayout>

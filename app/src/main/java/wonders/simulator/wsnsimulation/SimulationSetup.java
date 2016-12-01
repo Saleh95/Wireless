@@ -13,7 +13,6 @@ import java.util.ArrayList;
  *
  */
 public class SimulationSetup {
-
 	public final static String DEFAULT_OBSERVATION = "Temperature";
 	public final static double DEFAULT_THETA = 65;
 	public final static int DEFAULT_SENSOR_COUNT = 20;
