@@ -1,7 +1,6 @@
 # Wireless
 
 ## Sensor Network:
-,,,
 Sumulation for Distributed Estimation in Wireless Sensor Networks
 
 ## Installing:
