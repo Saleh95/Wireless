@@ -8,7 +8,7 @@ Clone or download the source file
   * Clone: git clone https://github.com/Saleh95/Wireless.git
 
 ### Activities:
-  * Main - implements the main
+  * Main
   * Graph - holds and plots graph data
   * Specs - holds the statistics
 
