@@ -32,6 +32,7 @@ public class Simulator_main extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        getLayoutInflater().inflate(R.layout.content_simulator_main,frameLayout);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

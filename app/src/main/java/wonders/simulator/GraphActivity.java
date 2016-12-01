@@ -1,6 +1,7 @@
 package wonders.simulator;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -28,6 +29,10 @@ import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.*;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -59,13 +64,13 @@ import wonders.simulator.wsnsimulation.SimulationManager;
 import wonders.simulator.wsnsimulation.SimulationSetup;
 
 
-public class GraphActivity extends Simulator_main implements OnChartGestureListener,OnChartValueSelectedListener,
-        SeekBar.OnSeekBarChangeListener
+public class GraphActivity extends Simulator_main implements OnChartGestureListener,OnChartValueSelectedListener
+
 {
-    private SeekBar mSeekBarX, mSeekBarY;
-    private TextView tvX, tvY;
+
     private LineChart mChart;
     private Intent intent;
+
 
     double[] gaussianSamples;
     double[] distrVals;
@@ -85,22 +90,11 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         SimulationManager.updateSimulation(pref);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
-
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-
-        mSeekBarX.setProgress(45);
-        mSeekBarY.setProgress(100);
-
-        mSeekBarY.setOnSeekBarChangeListener(this);
-        mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setViewPortOffsets(0, 0, 0, 0);
-        mChart.setBackgroundColor(Color.BLACK);
-
+        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setClickable(true);
 
         // no description text
         mChart.getDescription().setEnabled(false);
@@ -123,16 +117,21 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
         YAxis y = mChart.getAxisLeft();
 //        y.setTypeface(mTfLight);
-        y.setLabelCount(6, false);
-        y.setTextColor(Color.GREEN);
+        y.setLabelCount(10);
+        y.setTextColor(Color.BLACK);
         y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         y.setDrawGridLines(true);
         y.setAxisLineColor(Color.BLACK);
+        x.setLabelCount(10);
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+        x.setDrawGridLines(true);
+        x.setAxisLineColor(Color.BLACK);
+        x.setTextColor(Color.BLACK);
 
         mChart.getAxisRight().setEnabled(false);
 
         // add data
-        setData(45, 100);
+        setData();
 
         mChart.getLegend().setEnabled(false);
 
@@ -140,6 +139,8 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
         // dont forget to refresh the drawing
         mChart.invalidate();
+
+        colorPicker();
 
     }
 
@@ -185,7 +186,9 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-
+        Toast toast = Toast.makeText(getApplicationContext(),"X:"+Float.toString(e.getX())
+                +"Y:"+Float.toString(e.getY()),Toast.LENGTH_LONG);
+        toast.show();
     }
 
     @Override
@@ -193,31 +196,42 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
-        tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
 
-        // redraw
-        mChart.invalidate();
+    private void colorPicker(){
+
+        ColorPickerDialogBuilder
+                .with(getApplicationContext())
+                .setTitle("Choose color")
+                .initialColor(Color.BLACK)
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .density(12)
+                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int selectedColor) {
+                       Toast toast=  Toast.makeText(getApplicationContext(),
+                               "onColorSelected: 0x" + Integer.toHexString(selectedColor),
+                               Toast.LENGTH_LONG
+                               );
+                    }
+                })
+                .setPositiveButton("ok", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        mChart.setBackgroundColor(selectedColor);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .build()
+                .show();
     }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    private void setData(int count, float range) {
+    private void setData() {
        double mean = SimulationManager.getSimulationSetup().getTheta();
         double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup()
                 .getSensorCount());
