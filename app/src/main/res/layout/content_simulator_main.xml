@@ -46,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Background color"
+        android:onClick="Background"
         />
 
     <Button
@@ -54,6 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Graph Color"
+        android:onClick="chart"
         />
 
 </RelativeLayout>
