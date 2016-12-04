@@ -75,6 +75,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
     double[] gaussianSamples;
     double[] distrVals;
     double[] samples;
+    Bundle data;
 
 
     private int maximumSamples = 100;
@@ -90,10 +91,11 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         SimulationManager.updateSimulation(pref);
 
+        data = getIntent().getExtras();
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setViewPortOffsets(0, 0, 0, 0);
-        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setBackgroundColor(data.getInt("bgColor"));
         mChart.setClickable(true);
 
         // no description text
@@ -140,7 +142,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         // dont forget to refresh the drawing
         mChart.invalidate();
 
-        colorPicker();
+//        colorPicker();
 
     }
 
@@ -269,9 +271,9 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         distributionData.setCubicIntensity(0.2f);
         distributionData.setDrawCircles(false);
         distributionData.setLineWidth(1.8f);
-        distributionData.setCircleColor(Color.GREEN);
-        distributionData.setColor(Color.GREEN);
-        distributionData.setFillColor(Color.GREEN);
+        distributionData.setCircleColor(data.getInt("Color"));
+        distributionData.setColor(data.getInt("Color"));
+        distributionData.setFillColor(data.getInt("Color"));
 
         LineData data = new LineData(distributionData);
 

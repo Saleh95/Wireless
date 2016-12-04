@@ -1,9 +1,11 @@
 package wonders.simulator;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
 
 public class Simulator_main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +29,9 @@ public class Simulator_main extends AppCompatActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar;
+    int bgColor;
+    int color;
+    int c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +43,27 @@ public class Simulator_main extends AppCompatActivity
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.content_simulator_main,frameLayout);
 
+        ColorPickerView colorPickerView = (ColorPickerView) findViewById(R.id.color_picker_view);
+        colorPickerView.addOnColorSelectedListener(new OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int selectedColor) {
+                Log.d("ColorPicker", "onColorChanged: 0x" + Integer.toHexString(selectedColor));
+                c=selectedColor;
+
+            }
+        });
+
+        colorPickerView.addOnColorSelectedListener(new OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int selectedColor) {
+                Toast.makeText(
+                        Simulator_main.this,
+                        "selectedColor: " + Integer.toHexString(selectedColor).toUpperCase(),
+                        Toast.LENGTH_SHORT).show();
+                c=selectedColor;
+            }
+        });
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -43,9 +73,14 @@ public class Simulator_main extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
 
+    public void Background(View view){
+        bgColor = c;
+    }
 
-
+    public void chart(View view){
+        color = c;
     }
 
     @Override
@@ -86,9 +121,12 @@ public class Simulator_main extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        frameLayout.removeAllViews();
+
         if (id == R.id.graph) {
             intent = new Intent(this,GraphActivity.class);
-            intent.putExtra("num",5000);
+            intent.putExtra("bgColor",bgColor);
+            intent.putExtra("Color",color);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
             intent = new Intent(this,SpecsActivity.class);
