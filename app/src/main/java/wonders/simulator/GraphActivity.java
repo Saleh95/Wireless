@@ -127,6 +127,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
+
         XAxis x = mChart.getXAxis();
         x.setEnabled(true);
 
@@ -147,7 +148,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
         // add data
         manager = AppManager.getApp();
-        manager.setColor(data.getInt("color"));
+        manager.setColor(data.getInt("Color"));
         manager.genChart(mChart);
 
 
@@ -181,6 +182,11 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
     @Override
     public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
+        Toast toast = Toast.makeText(getApplicationContext(), Float.toString(velocityX)+
+                Float.toString(velocityY),Toast.LENGTH_LONG
+        );
+        toast.show();
+
 
     }
 
@@ -219,8 +225,10 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        tvX.setText("" + (mSeekBarX.getProgress() + 10));
-        tvY.setText("" + (mSeekBarY.getProgress() +10));
+        if(seekBar == mSeekBarX){
+        tvX.setText("" + (mSeekBarX.getProgress() + 10));}
+        if(seekBar == mSeekBarY){
+        tvY.setText("" + (mSeekBarY.getProgress() +10));}
         manager.setRound(Integer.parseInt(tvX.getText().toString()));
         manager.setMax(Integer.parseInt(tvY.getText().toString()));
         manager.genChart(mChart);

@@ -99,9 +99,9 @@ public class GraphGenerator {
         distributionData.setCubicIntensity(0.2f);
         distributionData.setDrawCircles(false);
         distributionData.setLineWidth(1.8f);
-        distributionData.setCircleColor(color);
-        distributionData.setColor(color);
-        distributionData.setFillColor(color);
+        distributionData.setCircleColor(this.color);
+        distributionData.setColor(this.color);
+        distributionData.setFillColor(this.color);
         return new LineData(distributionData);
     }
 
