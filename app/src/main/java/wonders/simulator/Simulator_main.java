@@ -41,7 +41,10 @@ public class Simulator_main extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.content_simulator_main,frameLayout);
+        getLayoutInflater().inflate(R.layout.color_picker,frameLayout);
+
+        bgColor = Color.WHITE;
+        color = Color.GREEN;
 
         ColorPickerView colorPickerView = (ColorPickerView) findViewById(R.id.color_picker_view);
         colorPickerView.addOnColorSelectedListener(new OnColorSelectedListener() {

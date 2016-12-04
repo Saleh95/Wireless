@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/data"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Main" />
         <item
             android:id="@+id/graph"
             android:icon="@drawable/graph"
@@ -14,6 +19,7 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Simulation" />
+
     </group>
 
     <item android:title="Communicate">
