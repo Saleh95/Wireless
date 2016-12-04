@@ -2,8 +2,8 @@ package wonders.simulator;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 
 public class GraphGenerator extends Service {
     private double x;
@@ -28,5 +28,16 @@ public class GraphGenerator extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public static class StatisticsActivity extends Simulator_main{
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            super.frameLayout.removeAllViews();
+            getLayoutInflater().inflate(R.layout.activity_specs,frameLayout);
+            setContentView(R.layout.activity_statistics);
+        }
     }
 }

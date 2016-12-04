@@ -82,7 +82,9 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        super.frameLayout.removeAllViews();
         getLayoutInflater().inflate(R.layout.activity_graph,frameLayout);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

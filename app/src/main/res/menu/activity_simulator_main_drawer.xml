@@ -7,13 +7,13 @@
             android:icon="@drawable/graph"
             android:title="Graph" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/stats"
             android:icon="@drawable/ic_menu_manage"
             android:title="Statistics" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/config"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Simulation" />
+            android:title="Simulation Settings" />
     </group>
 
     <item android:title="Communicate">
