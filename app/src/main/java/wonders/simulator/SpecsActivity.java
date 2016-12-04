@@ -21,7 +21,7 @@ public class SpecsActivity extends Simulator_main implements SetupListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         frameLayout.removeAllViews();
-        getLayoutInflater().inflate(R.layout.activity_specs,frameLayout);
+        getLayoutInflater().inflate(R.layout.content_specs,frameLayout);
     }
 
 
