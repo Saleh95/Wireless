@@ -29,9 +29,9 @@ public class StatisticsActivity extends Simulator_main {
         final TextView channel_view = (TextView) findViewById(R.id.channel_stats);
         final TextView sensors_view = (TextView) findViewById(R.id.sensors_stats);
 
-        alpha_view.append(config.getBool("alpha"));
-        channel_view.append(config.getBool("channel"));
-        sensors_view.append(String.valueOf(sensors));
+//        alpha_view.append(config.getBool("alpha"));
+//        channel_view.append(config.getBool("channel"));
+//        sensors_view.append(String.valueOf(sensors));
 
     }
 }

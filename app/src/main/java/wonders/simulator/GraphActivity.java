@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -144,10 +145,17 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         x.setTextColor(Color.BLACK);
 
         mChart.getAxisRight().setEnabled(false);
+        mChart.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getApplicationContext(),"lol1",Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
 
         // add data
         manager = AppManager.getApp();
-        manager.setColor(data.getInt("color"));
+        manager.setColor(data.getInt("Color"));
         manager.genChart(mChart);
 
 
@@ -166,6 +174,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
     @Override
     public void onChartLongPressed(MotionEvent me) {
+        Toast.makeText(getApplicationContext(),"lol1",Toast.LENGTH_LONG).show();
 
     }
 
@@ -235,5 +244,43 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+    private float x1,x2;
+    static final int MIN_DISTANCE = 90;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float deltaX = x2 - x1;
+
+                if (Math.abs(deltaX) > MIN_DISTANCE)
+                {
+                    // Left to Right swipe action
+                    if (x2 > x1)
+                    {
+                        Toast.makeText(this, "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show ();
+                    }
+
+                    // Right to left swipe action
+                    else
+                    {
+                        Toast.makeText(this, "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show ();
+                    }
+
+                }
+                else
+                {
+                    // consider as something else - a screen tap for example
+                }
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 }
