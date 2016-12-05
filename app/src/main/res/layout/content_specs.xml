@@ -14,7 +14,9 @@
         android:id="@+id/theta_input"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:hint="Theta" />
+        android:hint="Theta"
+        android:text=""
+        />
     <TextView
         android:layout_width="wrap_content"
         android:id="@+id/sensors_input"
@@ -25,7 +27,8 @@
         android:id="@+id/sensors_picker"
         android:layout_marginTop="8dp"
         android:layout_width="55dp"
-        android:layout_height="55dp"/>
+        android:layout_height="55dp"
+        />
     <TextView
         android:layout_width="match_parent"
         android:id="@+id/channel_input"

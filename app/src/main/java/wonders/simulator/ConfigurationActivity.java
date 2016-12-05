@@ -78,7 +78,8 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
         // handle user input for theta
         EditText theta_input = (EditText) findViewById(R.id.theta_input);
-        theta = Double.parseDouble(theta_input.getText().toString());
+        if(!theta_input.getText().toString().equals("")){
+        theta = Double.parseDouble(theta_input.getText().toString());}
 
     }
 
