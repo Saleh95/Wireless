@@ -1,5 +1,6 @@
 package wonders.simulator;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +36,9 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
     double theta = 1.4;
     boolean awgn, optimum = true;
     boolean rician, uniform = false;
+    static final String PREFS_NAME = "graph";
+    SharedPreferences settings;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,10 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         // create objects for text views to display picker values
         final TextView runtime_view = (TextView) findViewById(R.id.runtime_input);
         final TextView sensors_view = (TextView) findViewById(R.id.sensors_input);
+
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
+        editor = settings.edit();
+
         // grab number picker for sensors and runtime, create object
         NumberPicker run_picker = (NumberPicker)findViewById(R.id.runtime_picker);
         run_picker.setMinValue(0);
@@ -98,6 +106,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
     @Override
     public void setupChanged() {
+        SimulationManager.updateSimulation(settings);
         SimulationManager.getSimulationSetup().setObservation(SimulationSetup.DEFAULT_OBSERVATION);
         SimulationManager.getSimulationSetup().setSensorCount(sensors);
         SimulationManager.getSimulationSetup().setTheta(SimulationSetup.DEFAULT_THETA);
@@ -109,6 +118,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         SimulationManager.getSimulationSetup().setUniform(uniform);
         SimulationManager.getSimulationSetup().setAWGN(awgn);
         SimulationManager.getSimulationSetup().setOptimum(optimum);
+        SimulationManager.getLastSimulation().getSetup().setTheta(theta);
         //manager.setRound(runtime);
     }
 
@@ -132,6 +142,24 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
                     break;
             }
         }
+    }
+
+    private void saveData(){
+
+
+        editor.putFloat(SimulationManager.KEY_THETA,(float)theta);
+//        editor.putFloat(SimulationManager.KEY_POWER,(float)power);
+        editor.putFloat(SimulationManager.KEY_N,(float)theta);
+        editor.putFloat(SimulationManager.KEY_V,(float)theta);
+        editor.putFloat(SimulationManager.KEY_K,(float)theta);
+        editor.putBoolean(SimulationManager.KEY_RICIAN,new Boolean(this.rician));
+        editor.putBoolean(SimulationManager.KEY_RICIAN,new Boolean(this.uniform));
+        editor.putBoolean(SimulationManager.KEY_RICIAN,new Boolean(this.awgn));
+        editor.putBoolean(SimulationManager.KEY_RICIAN,new Boolean(this.optimum));
+
+
+        editor.apply();
+
     }
 
 }

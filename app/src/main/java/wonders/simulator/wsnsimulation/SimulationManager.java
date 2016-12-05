@@ -16,15 +16,15 @@ import android.content.SharedPreferences;
  */
 public class SimulationManager implements SetupListener {
 
-    final static String KEY_OBSERVATION = "pref_observation_name";
-    final static String KEY_SENSOR_COUNT = "pref_sensor_count";
-    final static String KEY_THETA = "pref_theta";
-    final static String KEY_POWER = "pref_power";
-    final static String KEY_N = "pref_variance_n";
-    final static String KEY_V = "pref_variance_v";
-    final static String KEY_K = "pref_k_value";
-    final static String KEY_RICIAN = "pref_rician";
-    final static String KEY_UNIFORM = "pref_uniform";
+    public final static String KEY_OBSERVATION = "pref_observation_name";
+    public final static String KEY_SENSOR_COUNT = "pref_sensor_count";
+    public final static String KEY_THETA = "pref_theta";
+    public final static String KEY_POWER = "pref_power";
+    public final static String KEY_N = "pref_variance_n";
+    public final static String KEY_V = "pref_variance_v";
+    public final static String KEY_K = "pref_k_value";
+    public final static String KEY_RICIAN = "pref_rician";
+    public final static String KEY_UNIFORM = "pref_uniform";
 
     private SetupListener listener;
 
