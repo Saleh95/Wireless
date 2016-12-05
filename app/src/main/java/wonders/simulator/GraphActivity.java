@@ -64,27 +64,20 @@ import wonders.simulator.wsnsimulation.SimulationManager;
 import wonders.simulator.wsnsimulation.SimulationSetup;
 
 
-public class GraphActivity extends Simulator_main implements OnChartGestureListener,OnChartValueSelectedListener
+public class GraphActivity extends Simulator_main implements OnChartGestureListener,OnChartValueSelectedListener,SeekBar.OnSeekBarChangeListener
 
 {
 
     private LineChart mChart;
-    private Intent intent;
-
-
-    double[] gaussianSamples;
-    double[] distrVals;
-    double[] samples;
     Bundle data;
-
-
-    private int maximumSamples = 100;
+    private TextView tvX, tvY;
+    private SeekBar mSeekBarX, mSeekBarY;
+    private AppManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        super.frameLayout.removeAllViews();
+        frameLayout.removeView(findViewById(R.id.color_picker));
         getLayoutInflater().inflate(R.layout.activity_graph,frameLayout);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -93,12 +86,27 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         SimulationManager.updateSimulation(pref);
 
-        data = getIntent().getExtras();
+        tvX = (TextView) findViewById(R.id.tvXMax);
+        tvY = (TextView) findViewById(R.id.tvYMax);
+
+        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+
+        mSeekBarX.setProgress(1);
+        mSeekBarY.setProgress(100);
+
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setViewPortOffsets(0, 0, 0, 0);
-        mChart.setBackgroundColor(data.getInt("bgColor"));
+
         mChart.setClickable(true);
+
+        data = getIntent().getExtras();
+
+        if(data!=null)
+            mChart.setBackgroundColor(data.getInt("bgColor"));
+        else
+            mChart.setBackgroundColor(Color.WHITE);
 
         // no description text
         mChart.getDescription().setEnabled(false);
@@ -115,6 +123,9 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
         mChart.setDrawGridBackground(false);
         mChart.setMaxHighlightDistance(300);
+
+        mSeekBarY.setOnSeekBarChangeListener(this);
+        mSeekBarX.setOnSeekBarChangeListener(this);
 
         XAxis x = mChart.getXAxis();
         x.setEnabled(true);
@@ -135,18 +146,13 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         mChart.getAxisRight().setEnabled(false);
 
         // add data
-        setData();
+        manager = AppManager.getApp();
+        manager.setColor(data.getInt("color"));
+        manager.genChart(mChart);
 
-        mChart.getLegend().setEnabled(false);
-
-        mChart.animateXY(2000, 2000);
-
-        // dont forget to refresh the drawing
-        mChart.invalidate();
-
-//        colorPicker();
 
     }
+
 
     @Override
     public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
@@ -201,89 +207,6 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
     }
 
 
-
-
-    private void colorPicker(){
-
-        ColorPickerDialogBuilder
-                .with(getApplicationContext())
-                .setTitle("Choose color")
-                .initialColor(Color.BLACK)
-                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                .density(12)
-                .setOnColorSelectedListener(new OnColorSelectedListener() {
-                    @Override
-                    public void onColorSelected(int selectedColor) {
-                       Toast toast=  Toast.makeText(getApplicationContext(),
-                               "onColorSelected: 0x" + Integer.toHexString(selectedColor),
-                               Toast.LENGTH_LONG
-                               );
-                    }
-                })
-                .setPositiveButton("ok", new ColorPickerClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        mChart.setBackgroundColor(selectedColor);
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .build()
-                .show();
-    }
-
-    private void setData() {
-       double mean = SimulationManager.getSimulationSetup().getTheta();
-        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup()
-                .getSensorCount());
-
-        Random ran = new Random();
-        gaussianSamples = new double[maximumSamples];
-        for (int i=0;i<maximumSamples;i++) {
-            gaussianSamples[i] = ((ran.nextGaussian()));
-        }
-
-        distrVals = new double[maximumSamples];
-        samples = new double[maximumSamples];
-        for (int i=0;i<maximumSamples;i++) {
-            if (i<maximumSamples/2)
-                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
-            else
-                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
-
-            // This is the renormalized Gaussian formula, specific for this
-
-            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) *
-                    (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) *
-                    Math.sqrt(2 * Math.PI))));
-        }
-
-        List<Entry> entries = new ArrayList<Entry>();
-        for (int i=0;i<maximumSamples;i++) {
-            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
-        }
-
-        Collections.sort(entries, new EntryXComparator());
-        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution");
-
-        distributionData.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        distributionData.setCubicIntensity(0.2f);
-        distributionData.setDrawCircles(false);
-        distributionData.setLineWidth(1.8f);
-        distributionData.setCircleColor(data.getInt("Color"));
-        distributionData.setColor(data.getInt("Color"));
-        distributionData.setFillColor(data.getInt("Color"));
-
-        LineData data = new LineData(distributionData);
-
-        mChart.setData(data);
-        mChart.invalidate();
-
-        }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -294,4 +217,23 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         }
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        tvX.setText("" + (mSeekBarX.getProgress() + 10));
+        tvY.setText("" + (mSeekBarY.getProgress() +10));
+        manager.setRound(Integer.parseInt(tvX.getText().toString()));
+        manager.setMax(Integer.parseInt(tvY.getText().toString()));
+        manager.genChart(mChart);
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 }

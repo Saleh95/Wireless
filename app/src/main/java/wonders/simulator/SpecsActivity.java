@@ -15,11 +15,13 @@ import wonders.simulator.wsnsimulation.SimulationSetup;
 
 public class SpecsActivity extends Simulator_main implements SetupListener{
 
+    SimulationSetup setup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.frameLayout.removeAllViews();
-        getLayoutInflater().inflate(R.layout.activity_specs,frameLayout);
+        frameLayout.removeAllViews();
+        getLayoutInflater().inflate(R.layout.content_specs,frameLayout);
     }
 
 
