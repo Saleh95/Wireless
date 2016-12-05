@@ -93,7 +93,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/run_button"
-        android:onClick="setupChanged"
         android:text="Run" />
 
 

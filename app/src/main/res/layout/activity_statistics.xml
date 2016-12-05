@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_statistics"
     android:layout_width="match_parent"
@@ -7,7 +7,72 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="30dp"
+    android:orientation="vertical"
     tools:context="wonders.simulator.StatisticsActivity">
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/thetahat_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="Theta Hat: "  />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/obs_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Observation with Theta: " />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/yVal_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Y-Value: " />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/sensors_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Number of Sensors: " />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/power_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Power: " />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/nVar_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="N-Variance: " />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/vVar_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="V-Variance: " />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/channel_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Channel: " />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/alpha_stats"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Alpha: " />
+
+
+</LinearLayout>

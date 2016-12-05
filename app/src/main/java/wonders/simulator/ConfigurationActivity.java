@@ -1,5 +1,6 @@
 package wonders.simulator;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -8,8 +9,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
@@ -27,7 +30,7 @@ import wonders.simulator.wsnsimulation.SimulationSetup;
 public class ConfigurationActivity extends Simulator_main implements SetupListener{
 
     SimulationSetup setup;
-    //private AppManager manager;
+    private AppManager manager;
     /* These buttons hold the values that get changed with listeners and the onRadioButtonClicked
         The code crashes now when I try to click anything on the simulation navigation menu, it didn't
         crash until I included theta and started calling setupChanged()
@@ -61,6 +64,13 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         sensor_picker.setMinValue(0);
         sensor_picker.setMaxValue(20);
 
+        // initialize default values for variables
+        runtime = 2;
+        sensors = 2;
+        theta = 1.4;
+        awgn = true;
+        optimum = true;
+
 
         //handle changing of number picker
         run_picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
@@ -68,8 +78,8 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             @Override
             public void onValueChange(NumberPicker numberPicker, int default_val, int input) {
                 // display, then set runtime value to selected value
-                runtime_view.setText("Runtime: " + String.valueOf(input));
-                //runtime = input;
+                runtime = input;
+                runtime_view.setText("Runtime: " + String.valueOf(runtime));
             }
         });
 
@@ -79,15 +89,20 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             @Override
             public void onValueChange(NumberPicker numberPicker, int default_val, int input) {
                 // display, then set runtime value to selected value
-                sensors_view.setText("Sensors: " + String.valueOf(input));
-                setup.setSensorCount(input);
+                sensors = input;
+                sensors_view.setText("Sensors: " + String.valueOf(sensors));
             }
         });
 
         // handle user input for theta
         EditText theta_input = (EditText) findViewById(R.id.theta_input);
         if(!theta_input.getText().toString().equals("")){
-        theta = Double.parseDouble(theta_input.getText().toString());}
+            theta = Double.parseDouble(theta_input.getText().toString());
+        }
+
+        // handle button for run
+        Button run = (Button) findViewById(R.id.run_button);
+        run.setOnClickListener(button_listener);
 
     }
 
@@ -122,6 +137,13 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         //manager.setRound(runtime);
     }
 
+    public View.OnClickListener button_listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            setupChanged();
+        }
+    };
+
     public void onRadioButtonClicked(View view){
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -129,16 +151,20 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         if(checked) {
             switch (view.getId()) {
                 case R.id.awgn_button:
-                    setup.setAWGN(true);
+                    awgn = true;
+                    rician = false;
                     break;
                 case R.id.rician_button:
-                    setup.setRician(true);
+                    rician = true;
+                    awgn = false;
                     break;
                 case R.id.optimum_button:
-                    setup.setOptimum(true);
+                    optimum = true;
+                    uniform = false;
                     break;
                 case R.id.uniform_button:
-                    setup.setUniform(true);
+                    uniform = true;
+                    optimum = false;
                     break;
             }
         }
@@ -160,6 +186,19 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
         editor.apply();
 
+    }
+
+    public String getBool(String bool){
+        switch(bool){
+            case "alpha":
+                if(awgn) return "AWGN";
+                else return "Rician with K";
+            case "channel":
+                if(optimum) return "Optimum";
+                else return "Uniform";
+            default:
+                return "";
+        }
     }
 
 }
