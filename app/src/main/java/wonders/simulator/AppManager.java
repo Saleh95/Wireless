@@ -26,7 +26,7 @@ public class AppManager {
 
     public void setRound(int round){
         g.setRounds(round);
-    }
+    }       // send time to here
 
     public void setMax(int max){
         g.setMaximumSamples(max);
