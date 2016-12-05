@@ -3,8 +3,6 @@ package wonders.simulator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -131,12 +129,15 @@ public class Simulator_main extends AppCompatActivity
             intent.putExtra("bgColor",bgColor);
             intent.putExtra("Color",color);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            intent = new Intent(this,SpecsActivity.class);
+        } else if (id == R.id.stats) {
+            intent = new Intent(this,StatisticsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-
-        }else if (id == R.id.nav_share) {
+        } else if (id == R.id.config) {
+            intent = new Intent(this,ConfigurationActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.home) {
+            intent = new Intent(this,Simulator_main.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
 

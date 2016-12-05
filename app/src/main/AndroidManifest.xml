@@ -13,12 +13,16 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity
-            android:name=".SpecsActivity"
-            android:label="@string/title_activity_specs"
+            android:name=".StatisticsActivity"
+            android:label="Statistics"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ConfigurationActivity"
+            android:label="Simulation Settings"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Simulator_main"
-            android:label="@string/title_activity_simulator_main"
+            android:label="Main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,20 +4,20 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/data"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/home"
+            android:icon="@drawable/home"
             android:title="Main" />
         <item
             android:id="@+id/graph"
-            android:icon="@drawable/graph"
+            android:icon="@drawable/graph3"
             android:title="Graph" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/stats"
+            android:icon="@drawable/data"
             android:title="Statistics" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/config"
+            android:icon="@drawable/configuration_icon_"
             android:title="Simulation" />
 
     </group>
