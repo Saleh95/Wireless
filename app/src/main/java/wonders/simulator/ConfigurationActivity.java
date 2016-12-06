@@ -7,9 +7,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
@@ -27,7 +30,7 @@ import wonders.simulator.wsnsimulation.SimulationSetup;
 public class ConfigurationActivity extends Simulator_main implements SetupListener{
 
     SimulationSetup setup;
-    //private AppManager manager;
+    private AppManager manager = new AppManager();
     /* These buttons hold the values that get changed with listeners and the onRadioButtonClicked
         The code crashes now when I try to click anything on the simulation navigation menu, it didn't
         crash until I included theta and started calling setupChanged()
@@ -69,7 +72,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             public void onValueChange(NumberPicker numberPicker, int default_val, int input) {
                 // display, then set runtime value to selected value
                 runtime_view.setText("Runtime: " + String.valueOf(input));
-                //runtime = input;
+                runtime = input;
             }
         });
 
@@ -80,14 +83,39 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             public void onValueChange(NumberPicker numberPicker, int default_val, int input) {
                 // display, then set runtime value to selected value
                 sensors_view.setText("Sensors: " + String.valueOf(input));
-                setup.setSensorCount(input);
+                sensors = input;
             }
         });
 
         // handle user input for theta
-        EditText theta_input = (EditText) findViewById(R.id.theta_input);
-        if(!theta_input.getText().toString().equals("")){
-        theta = Double.parseDouble(theta_input.getText().toString());}
+        final EditText theta_input = (EditText) findViewById(R.id.theta_input);
+        theta_input.setFocusable(true);
+        theta_input.requestFocus();
+        theta_input.setOnKeyListener(new View.OnKeyListener(){
+            public boolean onKey(View view, int key, KeyEvent event){
+                // detect if user presses enter, change theta accordingly
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)){
+                    if(!theta_input.getText().toString().equals("")){
+                        theta = Double.parseDouble(theta_input.getText().toString());
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        /*if(!theta_input.getText().toString().equals("")){
+            theta = Double.parseDouble(theta_input.getText().toString());
+        }*/
+
+        // handle run button press
+        Button run = (Button) findViewById(R.id.run_button);
+        run.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupChanged();
+            }
+        });
 
     }
 
@@ -119,7 +147,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         SimulationManager.getSimulationSetup().setAWGN(awgn);
         SimulationManager.getSimulationSetup().setOptimum(optimum);
         SimulationManager.getLastSimulation().getSetup().setTheta(theta);
-        //manager.setRound(runtime);
+        manager.setRound(runtime);
 
         Thread t= new Thread(new Runnable() {
             @Override
@@ -140,16 +168,20 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         if(checked) {
             switch (view.getId()) {
                 case R.id.awgn_button:
-                    setup.setAWGN(true);
+                    awgn = true;
+                    rician = false;
                     break;
                 case R.id.rician_button:
-                    setup.setRician(true);
+                    awgn = false;
+                    rician = true;
                     break;
                 case R.id.optimum_button:
-                    setup.setOptimum(true);
+                    optimum = true;
+                    uniform = false;
                     break;
                 case R.id.uniform_button:
-                    setup.setUniform(true);
+                    optimum = false;
+                    uniform = true;
                     break;
             }
         }

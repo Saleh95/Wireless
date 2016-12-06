@@ -4,13 +4,14 @@ package wonders.simulator;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.LineChart;
 
 public class AppManager {
 
     private GraphGenerator g;
     private static AppManager app;
 
-    private AppManager() {
+    protected AppManager() {
         g = GraphGenerator.getInstance();
     }
 
@@ -57,5 +58,6 @@ public class AppManager {
         // dont forget to refresh the drawing
         chart.invalidate();
     }
+
 
 }

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:layout_marginTop="20dp"
-        android:text="Observation with Theta: " />
+        android:text="Observation: " />
     <TextView
         android:layout_width="wrap_content"
         android:id="@+id/yVal_stats"

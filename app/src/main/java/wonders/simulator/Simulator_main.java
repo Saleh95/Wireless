@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
+import com.github.mikephil.charting.charts.LineChart;
 
 public class Simulator_main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +32,7 @@ public class Simulator_main extends AppCompatActivity
     int bgColor;
     int color;
     int c;
+    private GraphActivity graph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +141,6 @@ public class Simulator_main extends AppCompatActivity
         }else if (id == R.id.home) {
             intent = new Intent(this,Simulator_main.class);
             startActivity(intent);
-
-        } else if (id == R.id.nav_send) {
 
         }
 

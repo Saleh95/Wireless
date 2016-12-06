@@ -69,7 +69,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
 {
 
-    private LineChart mChart;
+    protected LineChart mChart;
     Bundle data;
     private TextView tvX, tvY;
     private SeekBar mSeekBarX, mSeekBarY;
