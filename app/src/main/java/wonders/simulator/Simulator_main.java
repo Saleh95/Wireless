@@ -1,9 +1,12 @@
 package wonders.simulator;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,7 +27,28 @@ import com.github.mikephil.charting.charts.LineChart;
 public class Simulator_main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Intent intent;
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public void verifyStoragePermissions() {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+    protected Intent intent;
     FrameLayout frameLayout;
     DrawerLayout drawer;
     NavigationView navigationView;
@@ -32,7 +56,7 @@ public class Simulator_main extends AppCompatActivity
     int bgColor;
     int color;
     int c;
-    private GraphActivity graph;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +64,8 @@ public class Simulator_main extends AppCompatActivity
         setContentView(R.layout.activity_simulator_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        verifyStoragePermissions();
 
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.color_picker,frameLayout);

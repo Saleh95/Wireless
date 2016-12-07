@@ -1,14 +1,17 @@
 package wonders.simulator;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -74,6 +77,8 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
     private TextView tvX, tvY;
     private SeekBar mSeekBarX, mSeekBarY;
     private AppManager manager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +153,8 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         mChart.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(getApplicationContext(),"lol1",Toast.LENGTH_LONG).show();
+                verifyStoragePermissions();
+                mChart.saveToGallery("Graph1",85);
                 return true;
             }
         });

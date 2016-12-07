@@ -1,10 +1,12 @@
 package wonders.simulator;
 
+import android.content.Intent;
 import android.support.annotation.StringDef;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -55,6 +57,11 @@ public class StatisticsActivity extends Simulator_main {
         sensors_view.append(String.valueOf(SimulationManager.getSimulationSetup().getSensorCount()));
         yVal_view.append(SimulationManager.getLastSimulation().getYVal().toFormattedString());
 
-
     }
+
+    public void showList(View view){
+        intent = new Intent(this,SensorList.class);
+        startActivity(intent);
+    }
+
 }
