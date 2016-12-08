@@ -134,6 +134,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         mChart.setDrawGridBackground(false);
         mChart.setMaxHighlightDistance(300);
 
+
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
@@ -163,6 +164,8 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
                 return true;
             }
         });
+
+        mChart.setOnChartValueSelectedListener(this);
 
         // add data
         manager = AppManager.getApp();
@@ -246,7 +249,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         Toast toast = Toast.makeText(getApplicationContext(),"X:"+Float.toString(e.getX())
-                +"Y:"+Float.toString(e.getY()),Toast.LENGTH_LONG);
+                +"\nY:"+Float.toString(e.getY()),Toast.LENGTH_LONG);
         toast.show();
     }
 

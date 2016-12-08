@@ -36,6 +36,10 @@ public class GraphGenerator {
 
     }
 
+    public int getRounds() {
+        return rounds;
+    }
+
     public static GraphGenerator getInstance(){
         if(gen==null)
             gen= new GraphGenerator();
