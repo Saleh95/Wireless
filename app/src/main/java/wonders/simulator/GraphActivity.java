@@ -105,6 +105,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         mSeekBarY.setProgress(100);
 
 
+
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setViewPortOffsets(0, 0, 0, 0);
 
@@ -180,7 +181,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text[0] = input.getText().toString();
@@ -267,10 +268,15 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        tvX.setText("" + (mSeekBarX.getProgress() + 10));
-        tvY.setText("" + (mSeekBarY.getProgress() +10));
-        manager.setRound(Integer.parseInt(tvX.getText().toString()));
-        manager.setMax(Integer.parseInt(tvY.getText().toString()));
+        if(seekBar.equals(mSeekBarX)){
+            tvX.setText("Runs\n" + (mSeekBarX.getProgress()));
+            manager.setRound(mSeekBarX.getProgress());
+        }
+        else {
+            tvY.setText("Max\n" + (mSeekBarY.getProgress()));
+            manager.setMax(mSeekBarY.getProgress());
+        }
+
         manager.genChart(mChart);
 
     }
