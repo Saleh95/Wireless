@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,10 +32,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
     SimulationSetup setup;
     private AppManager manager = new AppManager();
-    /* These buttons hold the values that get changed with listeners and the onRadioButtonClicked
-        The code crashes now when I try to click anything on the simulation navigation menu, it didn't
-        crash until I included theta and started calling setupChanged()
-     */
+
     int runtime, sensors = 2;
     double theta = 1.4;
     boolean awgn, optimum = true;
@@ -89,12 +87,13 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
         // handle user input for theta
         final EditText theta_input = (EditText) findViewById(R.id.theta_input);
+        //theta_input.setInputType(InputType.TYPE_CLASS_NUMBER);
         theta_input.setFocusable(true);
         theta_input.requestFocus();
         theta_input.setOnKeyListener(new View.OnKeyListener(){
             public boolean onKey(View view, int key, KeyEvent event){
                 // detect if user presses enter, change theta accordingly
-                if((event.getAction() == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)){
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && ((key == KeyEvent.KEYCODE_ENTER) || (key == KeyEvent.KEYCODE_NUMPAD_ENTER))){
                     if(!theta_input.getText().toString().equals("")){
                         theta = Double.parseDouble(theta_input.getText().toString());
                     }
