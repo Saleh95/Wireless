@@ -36,13 +36,14 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         crash until I included theta and started calling setupChanged()
      */
     int runtime, sensors = 2;
-    double theta = 1.4;
+    double theta ,power;
     boolean awgn, optimum = true;
     boolean rician, uniform = false;
     static final String PREFS_NAME = "graph";
     SharedPreferences settings;
     SharedPreferences.Editor editor;
     private EditText theta_input;
+    private EditText power_input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,9 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         // create objects for text views to display picker values
         final TextView runtime_view = (TextView) findViewById(R.id.runtime_input);
         final TextView sensors_view = (TextView) findViewById(R.id.sensors_input);
+
+        theta = SimulationManager.getSimulationSetup().getTheta();
+        power = SimulationManager.getSimulationSetup().getPower();
 
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         editor = settings.edit();
@@ -114,6 +118,22 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             }
         });
 
+        power_input = (EditText) findViewById(R.id.power_input);
+        power_input.setFocusable(true);
+        power_input.requestFocus();
+        power_input.setOnKeyListener(new View.OnKeyListener(){
+            public boolean onKey(View view, int key, KeyEvent event){
+                // detect if user presses enter, change theta accordingly
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)){
+                    if(!power_input.getText().toString().equals("")){
+                        power = Double.parseDouble(power_input.getText().toString());
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
 //        theta_input.setText(Double.toString(SimulationManager.getSimulationSetup().getTheta()));
 
         /*if(!theta_input.getText().toString().equals("")){
@@ -146,6 +166,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         SimulationManager.getSimulationSetup().setAWGN(awgn);
         SimulationManager.getSimulationSetup().setOptimum(optimum);
         SimulationManager.getSimulationSetup().setTheta(theta);
+        SimulationManager.getSimulationSetup().setPower(power);
         manager.setRound(runtime);
 
         Thread t= new Thread(new Runnable() {
@@ -193,7 +214,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
 
         editor.putFloat(SimulationManager.KEY_THETA,(float)theta);
-//        editor.putFloat(SimulationManager.KEY_POWER,(float)power);
+        editor.putFloat(SimulationManager.KEY_POWER,(float)power);
         editor.putFloat(SimulationManager.KEY_N,(float)theta);
         editor.putFloat(SimulationManager.KEY_V,(float)theta);
         editor.putFloat(SimulationManager.KEY_K,(float)theta);

@@ -19,6 +19,17 @@
         android:inputType="numberDecimal"
         android:imeOptions="actionDone"
         />
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/power_input"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:hint="Power"
+        android:text=""
+        android:inputType="numberDecimal"
+        android:imeOptions="actionDone"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:id="@+id/sensors_input"
