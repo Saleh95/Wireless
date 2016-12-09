@@ -97,7 +97,6 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         // handle user input for theta
         theta_input = (EditText) findViewById(R.id.theta_input);
         final EditText theta_input = (EditText) findViewById(R.id.theta_input);
-        //theta_input.setInputType(InputType.TYPE_CLASS_NUMBER);
         theta_input.setFocusable(true);
         theta_input.requestFocus();
         theta_input.setOnKeyListener(new View.OnKeyListener(){
