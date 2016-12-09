@@ -145,7 +145,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         SimulationManager.getSimulationSetup().setUniform(uniform);
         SimulationManager.getSimulationSetup().setAWGN(awgn);
         SimulationManager.getSimulationSetup().setOptimum(optimum);
-        SimulationManager.getLastSimulation().getSetup().setTheta(theta);
+        SimulationManager.getSimulationSetup().setTheta(theta);
         manager.setRound(runtime);
 
         Thread t= new Thread(new Runnable() {
