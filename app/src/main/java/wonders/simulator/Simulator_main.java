@@ -183,8 +183,8 @@ public class Simulator_main extends AppCompatActivity
 
         if (id == R.id.graph) {
             intent = new Intent(this,GraphActivity.class);
-//            intent.putExtra("bgColor",bgColor);
-//            intent.putExtra("Color",color);
+            manager.setColor(color);
+            manager.setBgColor(bgColor);
             startActivity(intent);
         } else if (id == R.id.stats) {
             intent = new Intent(this,StatisticsActivity.class);

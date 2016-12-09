@@ -82,7 +82,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             @Override
             public void onValueChange(NumberPicker numberPicker, int default_val, int input) {
                 // display, then set runtime value to selected value
-                runtime_view.setText("Runtime: " + String.valueOf(input));
+                runtime_view.setText("Runtime:  " + String.valueOf(input));
                 runtime = input;
             }
         });
@@ -105,7 +105,6 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         theta_input.setOnKeyListener(new View.OnKeyListener(){
             public boolean onKey(View view, int key, KeyEvent event){
                 // detect if user presses enter, change theta accordingly
-                ((EditText)view).setText("");
                 if((event.getAction() == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)){
                     if(!theta_input.getText().toString().equals("")){
                         theta = Double.parseDouble(theta_input.getText().toString());
@@ -116,7 +115,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             }
         });
 
-        theta_input.setText(Double.toString(SimulationManager.getSimulationSetup().getTheta()));
+//        theta_input.setText(Double.toString(SimulationManager.getSimulationSetup().getTheta()));
 
         /*if(!theta_input.getText().toString().equals("")){
             theta = Double.parseDouble(theta_input.getText().toString());
