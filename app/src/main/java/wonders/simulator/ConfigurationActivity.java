@@ -31,7 +31,6 @@ import wonders.simulator.wsnsimulation.SimulationSetup;
 public class ConfigurationActivity extends Simulator_main implements SetupListener{
 
     SimulationSetup setup;
-    private AppManager manager = AppManager.getApp();
     /* These buttons hold the values that get changed with listeners and the onRadioButtonClicked
         The code crashes now when I try to click anything on the simulation navigation menu, it didn't
         crash until I included theta and started calling setupChanged()
