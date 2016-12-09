@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_specs"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="wonders.simulator.ConfigurationActivity"
     tools:showIn="@layout/activity_specs"
-    android:orientation="vertical"
     >
 
     <EditText
@@ -28,6 +27,7 @@
         android:text=""
         android:inputType="numberDecimal"
         android:imeOptions="actionDone"
+        android:layout_below="@+id/theta_input"
         />
 
     <TextView
@@ -35,12 +35,16 @@
         android:id="@+id/sensors_input"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:text="Sensors:" />
+        android:text="Sensors:"
+        android:layout_below="@+id/power_input"
+        />
     <NumberPicker
         android:id="@+id/sensors_picker"
         android:layout_marginTop="8dp"
         android:layout_width="55dp"
         android:layout_height="55dp"
+        android:layout_below="@id/power_input"
+        android:layout_toRightOf="@+id/sensors_input"
         />
     <TextView
         android:layout_width="match_parent"
@@ -48,11 +52,16 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:layout_marginTop="8dp"
-        android:text="Channel:" />
+        android:text="Channel:"
+        android:layout_below="@+id/sensors_picker"
+        />
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/channel_input"
+        android:id="@+id/channel"
+        >
         <RadioButton android:id="@+id/awgn_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +78,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/channel"
+        android:id="@+id/kk"
+        >
         <TextView
             android:layout_width="match_parent"
             android:id="@+id/alpha_input"
@@ -93,12 +105,16 @@
         android:layout_marginTop="8dp"
         android:textSize="20dp"
         android:id="@+id/runtime_input"
-        android:text="Run Multiple Times:" />
+        android:text="Run Multiple Times:"
+        android:layout_below="@+id/kk"
+        />
     <NumberPicker
         android:id="@+id/runtime_picker"
         android:layout_marginTop="8dp"
         android:layout_width="55dp"
-        android:layout_height="55dp">
+        android:layout_height="55dp"
+        android:layout_below="@+id/runtime_input"
+        >
     </NumberPicker>
 
     <Button
@@ -106,7 +122,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/run_button"
-        android:text="Run" />
+        android:text="Run"
+        android:layout_below="@+id/runtime_input"
+        android:layout_toRightOf="@+id/runtime_picker"
+        android:layout_marginLeft="40dp"
+        />
 
 
-</LinearLayout>
+</RelativeLayout>

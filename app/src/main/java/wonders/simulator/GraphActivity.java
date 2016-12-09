@@ -137,6 +137,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
+
         XAxis x = mChart.getXAxis();
         x.setEnabled(true);
 
