@@ -1,5 +1,6 @@
 package wonders.simulator;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -8,7 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,8 +31,11 @@ import wonders.simulator.wsnsimulation.SimulationSetup;
 public class ConfigurationActivity extends Simulator_main implements SetupListener{
 
     SimulationSetup setup;
-    private AppManager manager = new AppManager();
-
+    private AppManager manager = AppManager.getApp();
+    /* These buttons hold the values that get changed with listeners and the onRadioButtonClicked
+        The code crashes now when I try to click anything on the simulation navigation menu, it didn't
+        crash until I included theta and started calling setupChanged()
+     */
     int runtime, sensors = 2;
     double theta = 1.4;
     boolean awgn, optimum = true;
@@ -97,7 +100,6 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
         // handle user input for theta
         theta_input = (EditText) findViewById(R.id.theta_input);
-        final EditText theta_input = (EditText) findViewById(R.id.theta_input);
         theta_input.setFocusable(true);
         theta_input.requestFocus();
         theta_input.setOnKeyListener(new View.OnKeyListener(){
@@ -105,7 +107,6 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
                 // detect if user presses enter, change theta accordingly
                 ((EditText)view).setText("");
                 if((event.getAction() == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)){
-                if((event.getAction() == KeyEvent.ACTION_DOWN) && ((key == KeyEvent.KEYCODE_ENTER) || (key == KeyEvent.KEYCODE_NUMPAD_ENTER))){
                     if(!theta_input.getText().toString().equals("")){
                         theta = Double.parseDouble(theta_input.getText().toString());
                     }
@@ -156,6 +157,9 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
             }
         });
         t.start();
+
+        intent = new Intent(this,GraphActivity.class);
+        startActivity(intent);
 
 
     }

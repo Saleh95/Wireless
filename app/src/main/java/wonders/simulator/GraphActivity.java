@@ -79,7 +79,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
     Bundle data;
     private TextView tvX, tvY;
     private SeekBar mSeekBarX, mSeekBarY;
-    private AppManager manager;
+
 
 
 
@@ -114,10 +114,8 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
         data = getIntent().getExtras();
 
-        if(data!=null)
-            mChart.setBackgroundColor(manager.getBgColor());
-        else
-            mChart.setBackgroundColor(Color.WHITE);
+
+        mChart.setBackgroundColor(manager.getBgColor());
 
         // no description text
         mChart.getDescription().setEnabled(false);
