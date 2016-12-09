@@ -4,9 +4,9 @@ package wonders.simulator;
 import android.widget.TextView;
 
 public class ViewHolder {
-    TextView ID;
-    TextView alpha;
-    TextView hval;
-    TextView nval;
+    public TextView ID;
+    public TextView alpha;
+    public TextView hval;
+    public TextView nval;
 
 }

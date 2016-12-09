@@ -46,10 +46,20 @@
     <Button
         android:layout_below="@id/v_alpha_slider"
         android:layout_toRightOf="@+id/b1"
+        android:id="@+id/b2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Graph Color"
         android:onClick="chart"
+        />
+
+    <Button
+        android:layout_below="@id/b1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="ChangeUP!"
+        android:onClick="changeUp"
         />
 
 

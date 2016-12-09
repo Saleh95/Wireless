@@ -40,6 +40,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
     static final String PREFS_NAME = "graph";
     SharedPreferences settings;
     SharedPreferences.Editor editor;
+    private EditText theta_input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +54,25 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
 
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         editor = settings.edit();
+        SimulationManager.updateSimulation(settings);
+
+
 
         // grab number picker for sensors and runtime, create object
         NumberPicker run_picker = (NumberPicker)findViewById(R.id.runtime_picker);
         run_picker.setMinValue(0);
         run_picker.setMaxValue(400);
         NumberPicker sensor_picker = (NumberPicker)findViewById(R.id.sensors_picker);
-        sensor_picker.setMinValue(0);
+        sensor_picker.setValue(SimulationManager.getSimulationSetup().getSensorCount());
+        sensor_picker.setMinValue(1);
         sensor_picker.setMaxValue(20);
 
 
         //handle changing of number picker
+
+        run_picker.setValue(manager.getRound());
+        runtime_view.setText("Runtime"+Integer.toString(manager.getRound()));
+
         run_picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
 
             @Override
@@ -86,6 +95,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         });
 
         // handle user input for theta
+        theta_input = (EditText) findViewById(R.id.theta_input);
         final EditText theta_input = (EditText) findViewById(R.id.theta_input);
         //theta_input.setInputType(InputType.TYPE_CLASS_NUMBER);
         theta_input.setFocusable(true);
@@ -93,6 +103,8 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         theta_input.setOnKeyListener(new View.OnKeyListener(){
             public boolean onKey(View view, int key, KeyEvent event){
                 // detect if user presses enter, change theta accordingly
+                ((EditText)view).setText("");
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)){
                 if((event.getAction() == KeyEvent.ACTION_DOWN) && ((key == KeyEvent.KEYCODE_ENTER) || (key == KeyEvent.KEYCODE_NUMPAD_ENTER))){
                     if(!theta_input.getText().toString().equals("")){
                         theta = Double.parseDouble(theta_input.getText().toString());
@@ -102,6 +114,8 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
                 return false;
             }
         });
+
+        theta_input.setText(Double.toString(SimulationManager.getSimulationSetup().getTheta()));
 
         /*if(!theta_input.getText().toString().equals("")){
             theta = Double.parseDouble(theta_input.getText().toString());
@@ -119,21 +133,8 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
     }
 
 
-    public void RunDefaultSetup(){
-        SimulationManager.getSimulationSetup().setObservation(SimulationSetup.DEFAULT_OBSERVATION);
-        SimulationManager.getSimulationSetup().setSensorCount(SimulationSetup.DEFAULT_SENSOR_COUNT);
-        SimulationManager.getSimulationSetup().setTheta(SimulationSetup.DEFAULT_THETA);
-        SimulationManager.getSimulationSetup().setPower(SimulationSetup.DEFAULT_POWER);
-        SimulationManager.getSimulationSetup().setVarianceN(SimulationSetup.DEFAULT_N);
-        SimulationManager.getSimulationSetup().setVarianceV(SimulationSetup.DEFAULT_V);
-        SimulationManager.getSimulationSetup().setK(SimulationSetup.DEFAULT_K);
-        SimulationManager.getSimulationSetup().setRician(SimulationSetup.DEFAULT_RICIAN);
-        SimulationManager.getSimulationSetup().setUniform(SimulationSetup.DEFAULT_UNIFORM);
-    }
-
     @Override
     public void setupChanged() {
-//        SimulationManager.updateSimulation(settings);
         SimulationManager.getSimulationSetup().setObservation(SimulationSetup.DEFAULT_OBSERVATION);
         SimulationManager.getSimulationSetup().setSensorCount(sensors);
         SimulationManager.getSimulationSetup().setTheta(SimulationSetup.DEFAULT_THETA);

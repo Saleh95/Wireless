@@ -11,7 +11,7 @@ public class AppManager {
     private GraphGenerator g;
     private static AppManager app;
 
-    protected AppManager() {
+    private AppManager() {
         g = GraphGenerator.getInstance();
     }
 
@@ -21,6 +21,7 @@ public class AppManager {
         return app;
     }
 
+
     public void setColor(int color){
         g.setColor(color);
     }
@@ -28,6 +29,8 @@ public class AppManager {
     public void setRound(int round){
         g.setRounds(round);
     }       // send time to here
+
+    public int getRound(){return g.getRounds();}
 
     public void setMax(int max){
         g.setMaximumSamples(max);
