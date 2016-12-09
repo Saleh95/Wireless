@@ -7,6 +7,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +32,9 @@ import com.github.mikephil.charting.charts.LineChart;
 
 public class Simulator_main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    protected Window window;
+    protected static AppManager manager;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -58,7 +64,7 @@ public class Simulator_main extends AppCompatActivity
     Toolbar toolbar;
     int bgColor;
     int color;
-    int c;
+    int c=0;
 
 
     @Override
@@ -69,6 +75,8 @@ public class Simulator_main extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         verifyStoragePermissions();
+
+        manager = AppManager.getApp();
 
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.color_picker,frameLayout);
@@ -105,23 +113,33 @@ public class Simulator_main extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        changeWindow();
 
     }
 
     public void Background(View view){
         bgColor = c;
+        manager.setBgColor(bgColor);
     }
 
     public void chart(View view){
         color = c;
+        manager.setColor(color);
+    }
+    public void changeUp(View view){
+
+        manager.setWindowColor(c);
+        changeWindow();
     }
 
-    public void changeUp(View view){if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(c);
-        window.setNavigationBarColor(c);
-    }}
+    public void changeWindow(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&manager.getWindowColor()!=0) {
+            window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(manager.getWindowColor());
+            window.setNavigationBarColor(manager.getWindowColor());
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -165,8 +183,8 @@ public class Simulator_main extends AppCompatActivity
 
         if (id == R.id.graph) {
             intent = new Intent(this,GraphActivity.class);
-            intent.putExtra("bgColor",bgColor);
-            intent.putExtra("Color",color);
+//            intent.putExtra("bgColor",bgColor);
+//            intent.putExtra("Color",color);
             startActivity(intent);
         } else if (id == R.id.stats) {
             intent = new Intent(this,StatisticsActivity.class);

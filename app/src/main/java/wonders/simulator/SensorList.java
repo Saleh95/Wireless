@@ -26,6 +26,7 @@ public class SensorList extends Simulator_main {
         super.onCreate(savedInstanceState);
         frameLayout.removeView(findViewById(R.id.color_picker));
         getLayoutInflater().inflate(R.layout.content_sensor_list,frameLayout);
+        changeWindow();
 
         Toast.makeText(getApplicationContext(),Integer.toString(SimulationManager.getLastSimulation().getSensorList().size()),
                 Toast.LENGTH_LONG).show();

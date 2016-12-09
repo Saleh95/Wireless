@@ -47,6 +47,7 @@ public class ConfigurationActivity extends Simulator_main implements SetupListen
         super.onCreate(savedInstanceState);
         frameLayout.removeAllViews();
         getLayoutInflater().inflate(R.layout.content_specs,frameLayout);
+        changeWindow();
 
         // create objects for text views to display picker values
         final TextView runtime_view = (TextView) findViewById(R.id.runtime_input);

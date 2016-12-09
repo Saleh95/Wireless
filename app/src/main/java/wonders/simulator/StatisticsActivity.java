@@ -25,6 +25,7 @@ public class StatisticsActivity extends Simulator_main {
         super.onCreate(savedInstanceState);
         super.frameLayout.removeAllViews();
         getLayoutInflater().inflate(R.layout.activity_statistics,frameLayout);
+        changeWindow();
 
         // setup to write data for statistics
         final TextView theta_view = (TextView) findViewById(R.id.thetahat_stats);

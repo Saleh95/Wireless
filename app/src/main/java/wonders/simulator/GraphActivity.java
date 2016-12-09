@@ -88,6 +88,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         super.onCreate(savedInstanceState);
         frameLayout.removeView(findViewById(R.id.color_picker));
         getLayoutInflater().inflate(R.layout.activity_graph,frameLayout);
+        changeWindow();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -114,7 +115,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
         data = getIntent().getExtras();
 
         if(data!=null)
-            mChart.setBackgroundColor(data.getInt("bgColor"));
+            mChart.setBackgroundColor(manager.getBgColor());
         else
             mChart.setBackgroundColor(Color.WHITE);
 
@@ -169,7 +170,7 @@ public class GraphActivity extends Simulator_main implements OnChartGestureListe
 
         // add data
         manager = AppManager.getApp();
-        manager.setColor(data.getInt("Color"));
+//        manager.setColor(data.getInt("Color"));
         manager.genChart(mChart);
 
 

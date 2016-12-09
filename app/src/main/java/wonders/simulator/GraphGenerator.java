@@ -26,14 +26,23 @@ public class GraphGenerator {
     private double[] gaussianSamples;
     private double[] distrVals;
     private double[] samples;
-    private int color;
+    private static int color;
+    private static int bgcolor;
     private static GraphGenerator gen;
-    private int maximumSamples = 100;
-    private int rounds = 1;
+    private static int maximumSamples = 100;
+    private static int rounds = 1;
 
 
     private GraphGenerator() {
 
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public  int getBgcolor() {
+        return bgcolor;
     }
 
     public int getRounds() {
@@ -47,15 +56,20 @@ public class GraphGenerator {
     }
 
     public void setMaximumSamples(int maximumSamples) {
-        this.maximumSamples = maximumSamples;
+        GraphGenerator.maximumSamples = maximumSamples;
     }
 
     public void setRounds(int rounds) {
-        this.rounds = rounds;
+        GraphGenerator.rounds = rounds;
     }
 
     public void setColor(int color) {
-        this.color = color;
+        GraphGenerator.color = color;
+    }
+
+
+    public void setBgcolor(int bgcolor) {
+        GraphGenerator.bgcolor = bgcolor;
     }
 
     public synchronized void simRunner(){
